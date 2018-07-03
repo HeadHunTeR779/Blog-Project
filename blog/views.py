@@ -4,7 +4,8 @@ from blog.forms import PostForm, CommentForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required #this decorator ONLY for functions !!
 from django.contrib.auth.mixins import LoginRequiredMixin #use this Mix-in in classes
-from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 # Create your views here.
 class AboutView(TemplateView):
@@ -36,4 +37,23 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     context_object_name = "form"  #now it sends PostForm in object name of form
 
     model = Post
+    fields = "__all__"
     template_name = "blog/create_post.html"
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = "/login/"  #In case the person is not logged where should they go?
+    redirect_field_name = "blog/post_detail.html"
+    form_class = PostForm  #Remember this guy passes its own object named form which has trivial stuff if you wanna send your own form then OVERRIDE
+    context_object_name = "form"  #now it sends PostForm in object name of form
+
+    model = Post
+    fields = ["author","title","text"]
+    template_name = "blog/create_post.html"
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy("blog:post_list")
+    template_name = "school_delete.html"
+    context_object_name = "school"
