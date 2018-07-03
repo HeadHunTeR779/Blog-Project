@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect  #(instead of redirect u may use HttpResponseRedirect If you want :)
+from django.utils import timezone
 from django.models import Post, Comment
 from blog.forms import PostForm, CommentForm
 from django.utils import timezone
@@ -32,7 +33,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     login_url = "/login/"  #In case the person is not logged where should they go?
-    redirect_field_name = "blog/post_detail.html"
+    redirect_field_name = "blog/post_form.html"
     form_class = PostForm  #Remember this guy passes its own object named form which has trivial stuff if you wanna send your own form then OVERRIDE
     context_object_name = "form"  #now it sends PostForm in object name of form
 
@@ -65,8 +66,13 @@ class DraftListView(LoginRequiredMixin, ListView):
     login_url = "/login/"  #In case the person is not logged where should they go?
     redirect_field_name = "blog/post_detail.html"
     model = Post
-    template_name = "blog/post_list.html"
+    template_name = "blog/post_draft_list.html"
     context_object_name = "posts"
 
     def get_queryset(self):
         return Post.object.filter(published_date__isnull = True).orderby('-create_date')
+
+
+
+########################################
+########################################
