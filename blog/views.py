@@ -53,7 +53,20 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = "/login/"  #In case the person is not logged where should they go?
+    redirect_field_name = "blog/post_detail.html"
     model = Post
     success_url = reverse_lazy("blog:post_list")
     template_name = "school_delete.html"
     context_object_name = "school"
+
+
+class DraftListView(LoginRequiredMixin, ListView):
+    login_url = "/login/"  #In case the person is not logged where should they go?
+    redirect_field_name = "blog/post_detail.html"
+    model = Post
+    template_name = "blog/post_list.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        return Post.object.filter(published_date__isnull = True).orderby('-create_date')
