@@ -10,5 +10,7 @@ urlpatterns = [
     url(r'^post/new/$', views.PostCreateView.as_view(), name="post_new"), #DOMAIN/post/new/
     url(r'^post/update/(?P<pk>\d+)/$', views.PostUpdateView.as_view(), name="post_update"),
     url(r'^post/delete/(?P<pk>\d+)/$', views.PostDeleteView.as_view(), name="post_delete"),
-    url(r'^draft/$',views.DraftListView.as_view(),name="draft_list"), 
+    url(r'^draft/$',views.DraftListView.as_view(),name="draft_list"),
+    url(r'^post/comment/(?P<pk>\d+)/$', views.get_comment_to_post, name="get_comment_to_post"),
+    url(r'^post/comment/approve/(?P<pk>\d+)/$', views.comment_approve, name="comment_approve"),
 ]
