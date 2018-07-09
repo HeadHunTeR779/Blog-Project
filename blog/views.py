@@ -72,6 +72,12 @@ class DraftListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Post.object.filter(published_date__isnull = True).orderby('-create_date')
 
+@login_required
+def post_publish(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.publish()
+    return redirect('post_detail', pk=post.pk)  #lol or simply pk=pk (its passed already hehe)
+
 
 
 ########################################
@@ -97,3 +103,10 @@ def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.approve()  #I have a built-in function
     return redirect('post_detail', pk=comment.post.pk)  #alt is HttpResponseRedirect(reverse()) this is amazing LOL
+
+@login_required
+def comment_remove(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    post_pk = comment.post.pk
+    comment.delete()
+    return redirect('post_detail', pk=post_pk)

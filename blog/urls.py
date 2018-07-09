@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^draft/$',views.DraftListView.as_view(),name="draft_list"),
     url(r'^post/comment/(?P<pk>\d+)/$', views.get_comment_to_post, name="get_comment_to_post"),
     url(r'^post/comment/approve/(?P<pk>\d+)/$', views.comment_approve, name="comment_approve"),
+    url(r'^post/comment/delete/(?P<pk>\d+)/$', view.comment_remove, name="comment_remove"),
+    url(r'^post/publish/(?P<pk>\d+)/$', view.post_publish, name="post_publish"),
 ]
