@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block body %}
+
+  <div class="jumbotron">
+    <h2>Please Login:</h2>
+    <h4 class="text-muted">Must be a Super User(Check with the site admin)</h4>
+
+    {% if form.errors %}
+      <p>Your username and password didn't match, please try again!</p>
+    {% endif %}
+
+    <!-- Cross Site Request Forgery -->
+    <form action="{% url 'login' %}" method="POST">{% csrf_token %}
+      {% form.as_p %}
+      <input type="submit" value="Login" class="btn btn-primary">
+      <input type="hidden" value="{{next}}" value="next"> 
+    </form>
+  </div>
+
+{% endblock %}
