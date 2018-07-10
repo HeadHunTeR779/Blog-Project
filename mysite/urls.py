@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
+from django.contrib.auth import views   #FOr built-in login and logout
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'',include('blog.urls')),   #Anything that is not Domain/admin goto blog.urls
+    url(r'^accounts/login/$', views.login, name="login"),   #I didn't do shit to hook it up with registration/login.html
+    url(r'^accounts/logout/$', views.logout, name="logout", kwargs={'next_page':'/'}),  #it redirects to DOMAIN/
 ]
