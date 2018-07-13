@@ -1,11 +1,15 @@
 {%extends "blog/base.html"%}
 
-{%block title%}About{%endblock%}
+{%block title%}Confirm Deletion{%endblock%}
 
 
 
 {%block body%}
-
+  <form method='POST'>{%csrf_token%}
+    <p>Are you sure you want to delete: {{post}} ?</p>
+    <input type="submit" value="Delete" class="btn btn-danger">
+    <a href="{% url 'blog:post_detail' pk=post.pk %}" class="btn btn-info">Cancel</a> 
+  </form>
 
 
 {%endblock%}

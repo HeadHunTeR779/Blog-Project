@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect  #(instead of redirect u may use HttpResponseRedirect If you want :)
 from django.utils import timezone
-from django.models import Post, Comment
+from blog.models import Post, Comment
 from blog.forms import PostForm, CommentForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required #this decorator ONLY for functions !!
@@ -33,13 +33,13 @@ class PostDetailView(DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     login_url = "/login/"  #In case the person is not logged where should they go?
-    redirect_field_name = "blog/post_form.html"
+    redirect_field_name = "blog/post_form.html"  #After logging in redirect here
     form_class = PostForm  #Remember this guy passes its own object named form which has trivial stuff if you wanna send your own form then OVERRIDE
     context_object_name = "form"  #now it sends PostForm in object name of form
 
     model = Post
     fields = "__all__"
-    template_name = "blog/create_post.html"
+    template_name = "blog/post_form.html"
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
@@ -58,8 +58,8 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     redirect_field_name = "blog/post_detail.html"
     model = Post
     success_url = reverse_lazy("blog:post_list")
-    template_name = "school_delete.html"
-    context_object_name = "school"
+    template_name = "blog/post_confirm_delete.html"
+    context_object_name = "post"
 
 
 class DraftListView(LoginRequiredMixin, ListView):
@@ -84,7 +84,7 @@ def post_publish(request, pk):
 ########################################
 
 @login_required
-def comment_to_post(request, pk):
+def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         form = CommentForm(request.POST)

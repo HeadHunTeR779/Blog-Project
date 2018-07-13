@@ -5,7 +5,14 @@
 
 
 {%block body%}
+  <div class="jumbotron">
+    <h3 class="display-4">New Comment</h3>
+    <form class="post-form" method="post">{%csrf_token%}
+      {{ form.as_p }}
+      <input type="submit" value="Comment" class="btn btn-primary">
+    </form>
 
-
-
+    <script>
+      var editor = new MediumEditor(".editable") ; //Look over in forms.py you used the editable class which will use this medium editor functionality
+    </script>
 {%endblock%}
