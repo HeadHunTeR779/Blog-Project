@@ -1,0 +1,24 @@
+{%extends "blog/base.html"%}
+
+{%block title%}Post Details{%endblock%}
+
+
+
+{%block body%}
+  <h1 class="posttitle loader">{{post.title}}</h1>
+  {% if post.published_date %}
+    <div class="date postdate">
+      {{post.published_date|date:"D M Y"}}
+    </div>
+  {% else %}
+    <a class="btn btn-default" href="{% url 'blog:post_publish' pk=post.pk %}">Publish</a>
+  {% endif %}
+  <p class="postcontent">{{post.text|safe|linebreaksbr}}</p>
+  {% if user.is_authenticated %}
+    <a href="{% url 'blog:post_update' pk=post.pk %}" class="btn btn-info"><i class="far fa-edit"></i></a>
+    <a href="{% url 'blog:post_delete' pk=post.pk %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+  {% endif %}
+
+  <a href="{% url 'blog:add_comment_to_post' pk=post.pk %}" class="btn btn-priamry">Add Comment</a>
+
+{%endblock%}
